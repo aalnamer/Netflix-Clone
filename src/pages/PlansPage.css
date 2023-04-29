@@ -1,0 +1,22 @@
+.plan_page_each {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  opacity: 0.8;
+}
+.plan_page_each:hover {
+  opacity: 1;
+}
+.plan_page_each > button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #e50914;
+  border: none;
+  cursor: pointer;
+}
+
+.plan_page_grey > button {
+  background-color: gray !important;
+  cursor: default;
+}
