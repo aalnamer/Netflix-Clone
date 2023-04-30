@@ -60,6 +60,7 @@ function Row({ title, url, isLarge = false }) {
             )
         )}
       </div>
+
       {trailerUrl && <Youtube videoId={trailerUrl} opts={opts} />}
     </div>
   );

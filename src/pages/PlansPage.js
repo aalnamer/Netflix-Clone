@@ -15,11 +15,12 @@ import { loadStripe } from "@stripe/stripe-js";
 
 function PlansPage() {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const user = useSelector(selectUser);
-
   const [currentSub, setCurrentSub] = useState([null]);
 
   const loadCheckout = async (priceId) => {
+    setIsLoading(true);
     const docRef = await addDoc(
       collection(db, "customers", user.uid, "checkout_sessions"),
       {
@@ -40,6 +41,7 @@ function PlansPage() {
           "pk_test_51N1vl6GUy30GPbDtbn1xLJY0z1JiafEvmN1xPZ9MWracnl3A5UOXAMcRmcV0z2RHk50esOu5t8aZIKDrK5dBEXMd00cyxfCN4E"
         );
         stripe.redirectToCheckout({ sessionId });
+        setIsLoading(false);
       }
     });
 
@@ -66,7 +68,7 @@ function PlansPage() {
     return () => {
       unsubscribe();
     };
-  }, [db, user.uid]);
+  }, [user.uid]);
 
   useEffect(() => {
     const dbData = collection(db, "products");
@@ -102,38 +104,43 @@ function PlansPage() {
 
   return (
     <div className="plans_page">
-      {currentSub && (
-        <p>
-          Renewal Date:{" "}
-          {new Date(currentSub?.current_period_end * 1000).toLocaleDateString()}
-        </p>
-      )}
+      <>
+        {currentSub.current_period_end && (
+          <p>
+            Renewal Date:{" "}
+            {new Date(
+              currentSub?.current_period_end * 1000
+            ).toLocaleDateString()}
+          </p>
+        )}
 
-      {Object.entries(products).map(([productId, productData]) => {
-        const activeSub = productData.name
-          ?.toLowerCase()
-          .includes(currentSub?.role);
+        {Object.entries(products).map(([productId, productData]) => {
+          const activeSub = productData.name
+            ?.toLowerCase()
+            .includes(currentSub?.role);
 
-        return (
-          <div
-            key={productId}
-            className={`${activeSub && "plan_page_grey"} plan_page_each`}
-          >
-            <div className="plan_page_each_info">
-              <h5> {productData.name}</h5>
-              <h6> {productData.description}</h6>
-            </div>
-            <button
-              onClick={() =>
-                !activeSub &&
-                loadCheckout(Object.values(productData.prices)[0].priceId)
-              }
+          return (
+            <div
+              key={productId}
+              className={`${activeSub && "plan_page_grey"} plan_page_each`}
             >
-              {activeSub ? "Current Package" : "Subscribe"}
-            </button>
-          </div>
-        );
-      })}
+              <div className="plan_page_each_info">
+                <h5> {productData.name}</h5>
+                <h6> {productData.description}</h6>
+              </div>
+              <button
+                className={isLoading ? "loading_button" : null}
+                onClick={() =>
+                  !activeSub &&
+                  loadCheckout(Object.values(productData.prices)[0].priceId)
+                }
+              >
+                {activeSub ? "Current Package" : "Subscribe"}
+              </button>
+            </div>
+          );
+        })}
+      </>
     </div>
   );
 }
