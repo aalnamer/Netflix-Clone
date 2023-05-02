@@ -25,22 +25,24 @@ function Banner() {
   }, []);
 
   return (
-    <header
-      className="banner_container"
-      style={{
-        backgroundImage: `url(${BASE_IMAGE_URL}${bannerData.backdrop_path})`,
-      }}
-    >
-      <div className="banner_items">
-        <h1 className="banner_name"> {bannerData.name}</h1>
-        <div className="buttons">
-          <button className="banner_button"> Play</button>
-          <button className="banner_button">Add To List</button>
+    bannerData && (
+      <header
+        className="banner_container"
+        style={{
+          backgroundImage: `url(${BASE_IMAGE_URL}${bannerData?.backdrop_path})`,
+        }}
+      >
+        <div className="banner_items">
+          <h1 className="banner_name"> {bannerData.name}</h1>
+          <div className="buttons">
+            <button className="banner_button"> Play</button>
+            <button className="banner_button">Add To List</button>
+          </div>
+          <h1 className="banner_desc">{shorten(bannerData.overview, 150)}</h1>
         </div>
-        <h1 className="banner_desc">{shorten(bannerData.overview, 150)}</h1>
-      </div>
-      <div className="bottomFade"></div>
-    </header>
+        <div className="bottomFade"></div>
+      </header>
+    )
   );
 }
 
