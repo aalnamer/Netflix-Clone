@@ -26,6 +26,13 @@ function ProfilePage() {
             <h2>{user.email}</h2>
             <div className="profile_page_sub">
               <h3>Plans</h3>
+              <p>
+                Test Credit Card:{" "}
+                <span>
+                  <b>4242-4242-4242-4242 </b>
+                </span>
+              </p>
+
               <PlansPage />
               <button
                 className="profile_page_signout"

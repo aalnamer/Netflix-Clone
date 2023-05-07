@@ -25,7 +25,7 @@ function Nav() {
       <div className="nav_container">
         <img
           className="logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Logonetflix.png/800px-Logonetflix.png"
+          src="https://i.imgur.com/tHICKvL.png"
           onClick={() => {
             navigate("/");
           }}
